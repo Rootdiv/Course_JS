@@ -1,10 +1,17 @@
-let money = 5000;
-let income = 5000;
-let addExpenses = 500;
-let deposit = 10000;
-const mission = 'Изучить JavaScript на курсе';
-const period = '2 месяца';
+//Обязательное задание
+const money = 5000;
+const income = 'Вёрстка';
+const addExpenses = 'Интернет, хостинг, домен, электроэнергия';
+const deposit = true;
+const mission = 100000;
+const period = 7;
 
-alert('Привет!');
+console.log(typeof money);
+console.log(typeof income);
+console.log(typeof deposit);
+console.log(addExpenses.length);
+console.log('Период равен ' + period + ' месяцев');
+console.log('Цель заработать ' + mission + ' рублей');
 
-console.log('Курс JavaScript');
+const budgetDay = money / 30;
+console.log(budgetDay);

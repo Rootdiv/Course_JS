@@ -11,13 +11,13 @@ function input() {
     if (!isNumber(num) && num !== 0) {
       alert('Введите число!');
       input();
-    } else if (num < 10 && num !== 0) {
+    } else if (num < 37 && num !== 0) {
       alert('Загаданное число больше');
       input();
-    } else if (num > 10) {
+    } else if (num > 37) {
       alert('Загаданное число меньше');
       input();
-    } else if (num === 10) {
+    } else if (num === 37) {
       alert('Поздравляю, Вы угадали!!!');
     } else {
       alert('Игра окончена');

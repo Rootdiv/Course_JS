@@ -3,7 +3,7 @@
 const isNumber = function (n) {
   return !isNaN(parseFloat(n)) && isFinite(n);
 };
-let number = Math.floor(Math.random() * 100) + 1;
+const number = Math.floor(Math.random() * 100) + 1;
 
 function startGame() {
   const numberInput = +prompt('Угадай число от 1 до 100');

@@ -3,26 +3,28 @@
 const isNumber = function (n) {
   return !isNaN(parseFloat(n)) && isFinite(n);
 };
+let number = Math.floor(Math.random() * 100) + 1;
 
-function input() {
-  const number = +prompt('Угадай число от 1 до 100');
+function startGame() {
+  const numberInput = +prompt('Угадай число от 1 до 100');
 
-  function set(num) {
+  function game(num) {
     if (!isNumber(num) && num !== 0) {
       alert('Введите число!');
-      input();
-    } else if (num < 37 && num !== 0) {
+      startGame();
+    } else if (num < number && num !== 0) {
       alert('Загаданное число больше');
-      input();
-    } else if (num > 37) {
+      startGame();
+    } else if (num > number) {
       alert('Загаданное число меньше');
-      input();
-    } else if (num === 37) {
+      startGame();
+    } else if (num === number) {
       alert('Поздравляю, Вы угадали!!!');
     } else {
       alert('Игра окончена');
     }
   }
-  return set(number);
+  return game(numberInput);
 }
-input();
+console.log(number);
+startGame();

@@ -10,18 +10,15 @@ function startGame() {
 
   function game(num) {
     if (num === null) {
-      alert('Игра окончена');
+      return alert('Игра окончена');
     } else if (!isNumber(num)) {
       alert('Введите число!');
       startGame();
-    } else if (num <= '0') {
+    } else if (num <= 0 || num > 100) {
       alert('Введите число в диапазоне от 1 до 100 ');
       startGame();
     } else if (num < number) {
       alert('Загаданное число больше');
-      startGame();
-    } else if (num < '100') {
-      alert('Введите число в диапазоне от 1 до 100 ');
       startGame();
     } else if (num > number) {
       alert('Загаданное число меньше');

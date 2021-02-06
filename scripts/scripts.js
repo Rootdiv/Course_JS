@@ -22,22 +22,22 @@ let appData = {
   mission: 100000,
   period: 7,
   asking: function () {
-    let addExpenses = prompt('Перечислите возможные расходы за рассчитываемый период через запятую');
+    const addExpenses = prompt('Перечислите возможные расходы за рассчитываемый период через запятую');
     appData.addExpenses = addExpenses.split(', ');
     appData.deposit = confirm('Есть ли у вас депозит в банке?');
-    appData.getExpensesMonth = function () {
-      let amount, expense;
-      for (let i = 0; i < 2; i++) {
-        expense = prompt('Введите обязательную статью расходов?');
-        do {
-          amount = prompt('Во сколько это обойдется?');
-        } while (!isNumber(amount));
-        appData.expenses[expense] = Number(amount);
-      }
-      for (let key in appData.expenses) {
-        appData.expensesMonth += appData.expenses[key];
-      }
-    };
+  },
+  getExpensesMonth: function () {
+    let amount, expense;
+    for (let i = 0; i < 2; i++) {
+      expense = prompt('Введите обязательную статью расходов?');
+      do {
+        amount = prompt('Во сколько это обойдется?');
+      } while (!isNumber(amount));
+      appData.expenses[expense] = Number(amount);
+    }
+    for (let key in appData.expenses) {
+      appData.expensesMonth += appData.expenses[key];
+    }
   },
   getBudget: function () {
     appData.budgetMonth = appData.money - appData.expensesMonth;
@@ -45,6 +45,11 @@ let appData = {
   },
   getTargetMonth: function () {
     appData.targetMonth = Math.ceil(appData.mission / appData.budgetMonth);
+    if (appData.targetMonth < 0) {
+      console.log('Цель не будет достигнута');
+    } else {
+      console.log('Цель будет достигнута за: ' + appData.targetMonth + ' месяцев(-a)');
+    }
   },
   budgetDay: 0,
   budgetMonth: 0,
@@ -68,13 +73,6 @@ appData.getBudget();
 appData.getTargetMonth();
 
 console.log('Расходы за месяц: ' + appData.expensesMonth);
-
-if (appData.targetMonth < 0) {
-  console.log('Цель не будет достигнута');
-} else {
-  console.log('Цель будет достигнута за: ' + appData.targetMonth + ' месяцев(-a)');
-}
-
 console.log(appData.getStatusIncome());
 
 for (let key in appData) {

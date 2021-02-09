@@ -6,7 +6,7 @@ const isNumber = function (n) {
 //Проверяем содержит ли строка только цифры или она пустая
 const isStr = function (str) {
   const strReg = /\D/;
-  return !strReg.test(str) || str === '';
+  return !strReg.test(str) || str === '' || str === null;
 };
 
 let money;

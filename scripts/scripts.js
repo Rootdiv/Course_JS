@@ -17,7 +17,7 @@ const start = function () {
 };
 start();
 
-let appData = {
+const appData = {
   money: Number(money),
   income: {},
   addIncome: [],
@@ -114,7 +114,7 @@ for (let key in appData) {
   console.log('Наша программа включает в себя данные: ' + key + ': ' + appData[key]);
 }
 
-let str = [];
+const str = [];
 appData.addExpenses.forEach((item, i) => {
   str[i] = item.charAt(0).toUpperCase() + item.slice(1);
 });

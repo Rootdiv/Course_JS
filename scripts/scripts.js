@@ -5,8 +5,7 @@ const isNumber = function(n) {
 };
 //Проверяем содержит ли строка только цифры или она пустая
 const isStr = function(str) {
-  const strReg = /\D/;
-  return !strReg.test(str) || str === '' || str === null;
+  return isNumber(str) || str === '' || str === null;
 };
 
 const calculate = document.getElementById('start');
@@ -23,9 +22,9 @@ const additionalExpenses = document.getElementsByClassName('additional_expenses-
 const incomePeriod = document.getElementsByClassName('income_period-value')[0];
 const targetMonth = document.getElementsByClassName('target_month-value')[0];
 const salaryAmount = document.querySelector('.salary-amount');
-const incomeTitle = document.querySelector('.income-title');
+const incomeTitle = document.querySelector('.income-items .income-title');
 const incomeAmount = document.querySelector('.income-amount');
-const expensesTitle = document.querySelector('.expenses-title');
+const expensesTitle = document.querySelector('.expenses-items .expenses-title');
 const expensesAmount = document.querySelector('.expenses-amount');
 const targetAmount = document.querySelector('.target-amount');
 const periodSelect = document.querySelector('.period-select');

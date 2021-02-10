@@ -21,4 +21,6 @@ book5[8].insertAdjacentElement('beforebegin', book5[5]);
 book5[6].insertAdjacentElement('beforebegin', book5[2]);
 
 const book6 = books[2].querySelectorAll('li');
-book6[8].insertAdjacentHTML('afterend', '<li>Глава 8: За пределами ES6</li>');
+const li = document.createElement('li');
+li.textContent = 'Глава 8: За пределами ES6';
+book6[8].insertAdjacentElement('afterend', li);

@@ -2,7 +2,9 @@
 const booksJS = document.querySelector('.books');
 const books = document.querySelectorAll('.book');
 booksJS.prepend(books[1]);
+console.log('booksJS: ', books);
 booksJS.append(books[2]);
+books[4].insertAdjacentElement('afterend', books[3]);
 document.body.style.backgroundImage = 'url(./image/you-dont-know-js.jpg)';
 books[4].querySelector('a').textContent = 'Книга 3. this и Прототипы Объектов';
 document.querySelector('.adv').remove();

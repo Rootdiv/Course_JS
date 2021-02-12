@@ -66,12 +66,11 @@ todoControl.addEventListener('submit', function(event) {
   };
   if (headerInput.value !== '') {
     todoData.push(newTodo);
+    headerInput.value = '';
     saveLocalStorage();
     render();
-    headerInput.value = '';
   }
 });
 
-render();
 loadLocalStorage();
 document.addEventListener('DOMContentLoaded', render);

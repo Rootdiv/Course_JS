@@ -19,7 +19,7 @@ const loadLocalStorage = function() {
 };
 
 const saveLocalStorage = function() {
-  const json = JSON.stringify(todoData, ['value', 'completed']);
+  const json = JSON.stringify(todoData);
   localStorage.setItem('todoList', json);
 };
 
@@ -49,6 +49,7 @@ const render = function() {
     btnTodoRemove.addEventListener('click', function() {
       li.remove();
       todoData.splice(i, 1);
+      render();
       if (todoData.length !== 0) {
         saveLocalStorage();
       } else {

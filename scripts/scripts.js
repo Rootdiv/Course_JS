@@ -113,10 +113,10 @@ const appData = {
       if (itemIncome !== '' && cashIncome !== '') {
         appData.income[itemIncome] = +cashIncome;
       }
-      for (let key in appData.income) {
-        appData.incomeMonth += +appData.income[key];
-      }
     });
+    for (let key in appData.income) {
+      appData.incomeMonth += appData.income[key];
+    }
   },
   getAddIncome: function() {
     additionalIncomeItem.forEach(function(item) {
@@ -173,10 +173,10 @@ document.querySelector('.calc').addEventListener('mouseover', function() {
     calculate.setAttribute('disabled', '');
   } else {
     calculate.removeAttribute('disabled');
-    calculate.addEventListener('click', function() {
-      appData.start();
-    });
   }
+});
+calculate.addEventListener('click', function() {
+  appData.start();
 });
 expensesPlus.addEventListener('click', appData.addExpensesBlock);
 incomePlus.addEventListener('click', appData.addIncomeBlock);

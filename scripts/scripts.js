@@ -81,13 +81,13 @@ const appData = {
     }
   },
   getExpenses: function() {
-    expensesItems.forEach(item => {
+    expensesItems.forEach(function(item) {
       const itemExpenses = item.querySelector('.expenses-title').value;
       const cashExpenses = item.querySelector('.expenses-amount').value;
       if (itemExpenses !== '' && cashExpenses !== '') {
         this.expenses[itemExpenses] = +cashExpenses;
       }
-    });
+    }.bind(appData));
   },
   getAddExpenses: function() {
     const addExpenses = additionalExpensesItem.value.split(',');
@@ -109,24 +109,24 @@ const appData = {
     }
   },
   getIncome: function() {
-    incomeItems.forEach(item => {
+    incomeItems.forEach(function(item) {
       const itemIncome = item.querySelector('.income-title').value;
       const cashIncome = item.querySelector('.income-amount').value;
       if (itemIncome !== '' && cashIncome !== '') {
         this.income[itemIncome] = +cashIncome;
       }
-    });
+    }.bind(appData));
     for (let key in this.income) {
       this.incomeMonth += this.income[key];
     }
   },
   getAddIncome: function() {
-    additionalIncomeItem.forEach(item => {
+    additionalIncomeItem.forEach(function(item) {
       const itemValue = item.value.trim();
       if (itemValue !== '') {
         this.addIncome.push(itemValue);
       }
-    });
+    }.bind(appData));
   },
   //Сумма расходов за месяц
   getExpensesMonth: function() {

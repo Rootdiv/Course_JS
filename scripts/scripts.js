@@ -68,8 +68,8 @@ const appData = {
     targetMonthValue.value = this.getTargetMonth();
     incomePeriodValue.value = this.calcSavedMoney();
     periodSelect.addEventListener('input', function() {
-      incomePeriodValue.value = appData.calcSavedMoney();
-    });
+      incomePeriodValue.value = this.calcSavedMoney();
+    }.bind(appData));
   },
   //Блок обязательных расходов
   addExpensesBlock: function() {
@@ -81,20 +81,20 @@ const appData = {
     }
   },
   getExpenses: function() {
-    expensesItems.forEach(function(item) {
+    expensesItems.forEach(item => {
       const itemExpenses = item.querySelector('.expenses-title').value;
       const cashExpenses = item.querySelector('.expenses-amount').value;
       if (itemExpenses !== '' && cashExpenses !== '') {
-        appData.expenses[itemExpenses] = +cashExpenses;
+        this.expenses[itemExpenses] = +cashExpenses;
       }
     });
   },
   getAddExpenses: function() {
     const addExpenses = additionalExpensesItem.value.split(',');
-    addExpenses.forEach(function(item) {
+    addExpenses.forEach(item => {
       item = item.trim();
       if (item !== '') {
-        appData.addExpenses.push(item);
+        this.addExpenses.push(item);
       }
     });
 
@@ -109,11 +109,11 @@ const appData = {
     }
   },
   getIncome: function() {
-    incomeItems.forEach(function(item) {
+    incomeItems.forEach(item => {
       const itemIncome = item.querySelector('.income-title').value;
       const cashIncome = item.querySelector('.income-amount').value;
       if (itemIncome !== '' && cashIncome !== '') {
-        appData.income[itemIncome] = +cashIncome;
+        this.income[itemIncome] = +cashIncome;
       }
     });
     for (let key in this.income) {
@@ -121,10 +121,10 @@ const appData = {
     }
   },
   getAddIncome: function() {
-    additionalIncomeItem.forEach(function(item) {
+    additionalIncomeItem.forEach(item => {
       const itemValue = item.value.trim();
       if (itemValue !== '') {
-        appData.addIncome.push(itemValue);
+        this.addIncome.push(itemValue);
       }
     });
   },
@@ -216,13 +216,17 @@ document.querySelector('.calc').addEventListener('mouseover', function() {
   }
 });
 calculate.addEventListener('click', function() {
-  appData.start();
-});
+  this.start();
+}.bind(appData));
 cancel.addEventListener('click', function() {
-  appData.reset();
-});
-expensesPlus.addEventListener('click', appData.addExpensesBlock);
-incomePlus.addEventListener('click', appData.addIncomeBlock);
+  this.reset();
+}.bind(appData));
+expensesPlus.addEventListener('click', function() {
+  this.addExpensesBlock();
+}.bind(appData));
+incomePlus.addEventListener('click', function() {
+  this.addIncomeBlock();
+}.bind(appData));
 periodSelect.addEventListener('input', function() {
   periodAmount.textContent = periodSelect.value;
 });

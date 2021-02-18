@@ -34,6 +34,9 @@ const periodSelect = document.querySelector('.period-select');
 const periodAmount = document.querySelector('.period-amount');
 const data = document.querySelector('.data');
 const cancel = document.getElementById('cancel');
+const depositBank = document.querySelector('.deposit-bank');
+const depositAmount = document.querySelector('.deposit-amount');
+const depositPercent = document.querySelector('.deposit-percent');
 
 class AppData {
   constructor() {
@@ -59,6 +62,7 @@ class AppData {
     this.getExpensesMonth();
     this.getAddExpenses();
     this.getAddIncome();
+    this.getInfoDeposit();
     this.getBudget();
     this.showResult();
   }
@@ -137,7 +141,8 @@ class AppData {
     }
   }
   getBudget() {
-    this.budgetMonth = this.money + this.incomeMonth - this.expensesMonth;
+    const monthDeposit = this.moneyDeposit * (this.percentDeposit / 100);
+    this.budgetMonth = this.money + this.incomeMonth - this.expensesMonth + monthDeposit;
     this.budgetDay = Math.floor(this.budgetMonth / 30);
   }
   getTargetMonth() {
@@ -156,15 +161,44 @@ class AppData {
   }
   getInfoDeposit() {
     if (this.deposit) {
-      let moneyDeposit, percentDeposit;
-      do {
-        percentDeposit = prompt('Какой годовой процент');
-      } while (!isNumber(percentDeposit));
-      this.percentDeposit = Number(percentDeposit);
-      do {
-        moneyDeposit = prompt('Какая сумма заложена');
-      } while (!isNumber(moneyDeposit));
-      this.moneyDeposit = Number(moneyDeposit);
+      this.percentDeposit = +depositPercent.value;
+      this.moneyDeposit = +depositAmount.value;
+    }
+  }
+  changePercent() {
+    const valueSelect = this.value;
+    if (valueSelect === 'other') {
+      depositPercent.value = '';
+      depositPercent.style.display = 'inline-block';
+      depositPercent.addEventListener('input', () => {
+        depositPercent.value = depositPercent.value.replace(/[^\d]/g, '');
+        if (depositPercent.value !== '' && depositPercent.value < 1 || depositPercent.value > 100) {
+          calculate.disabled = true;
+          alert('Введите корректное значение в поле проценты');
+        } else if (salaryAmount.value !== '') {
+          calculate.disabled = false;
+        }
+      });
+    } else {
+      depositPercent.value = valueSelect;
+      depositPercent.style.display = 'none';
+    }
+  }
+  depositHandler() {
+    if (deposit.checked) {
+      depositBank.style.display = 'inline-block';
+      depositAmount.style.display = 'inline-block';
+      this.deposit = true;
+      depositBank.addEventListener('change', this.changePercent);
+    } else {
+      depositBank.style.display = 'none';
+      depositAmount.style.display = 'none';
+      depositPercent.style.display = 'none';
+      depositBank.value = '';
+      depositAmount.value = '';
+      depositPercent.value = '';
+      this.deposit = false;
+      depositBank.removeEventListener('change', this.changePercent);
     }
   }
   calcSavedMoney() {
@@ -195,7 +229,11 @@ class AppData {
       incomeItems[i].remove();
       incomePlus.style.display = 'block';
     }
+    deposit.checked = false;
+    this.depositHandler();
+    this.changePercent();
     calculate.removeAttribute('style');
+    calculate.setAttribute('disabled', '');
     cancel.removeAttribute('style');
     periodAmount.textContent = periodSelect.value = 1;
     this.money = +salaryAmount.value;
@@ -203,13 +241,17 @@ class AppData {
     this.addIncome = [];
     this.expenses = {};
     this.addExpenses = [];
+    this.deposit = false;
+    this.percentDeposit = 0;
+    this.moneyDeposit = 0;
     this.budgetDay = 0;
     this.budgetMonth = 0;
     this.expensesMonth = 0;
     this.incomeMonth = 0;
   }
   eventsListeners() {
-    document.querySelector('.calc').addEventListener('mouseover', () => {
+    salaryAmount.addEventListener('input', () => {
+      salaryAmount.value = salaryAmount.value.replace(/[^\d]/g, '');
       if (salaryAmount.value === '') {
         calculate.setAttribute('disabled', '');
       } else {
@@ -223,21 +265,25 @@ class AppData {
     periodSelect.addEventListener('input', () => {
       periodAmount.textContent = periodSelect.value;
     });
+    deposit.addEventListener('change', () => this.depositHandler());
   }
 }
 const appData = new AppData();
 
+document.addEventListener('DOMContentLoaded', calculate.setAttribute('disabled', ''));
+
 appData.eventsListeners();
 
-// console.log('Расходы за месяц: ' + appData.expensesMonth);
-// console.log(appData.getStatusIncome());
+const validStr = document.querySelectorAll('[placeholder="Наименование"]');
+validStr.forEach(item => {
+  item.addEventListener('input', function() {
+    item.value = item.value.replace(/[^а-яё\s!?:,.]/gi, '');
+  });
+});
 
-// for (let key in appData) {
-//   console.log('Наша программа включает в себя данные: ' + key + ': ' + appData[key]);
-// }
-
-// const str = [];
-// appData.addExpenses.forEach((item, i) => {
-//   str[i] = item.charAt(0).toUpperCase() + item.slice(1);
-// });
-// console.log(str.join(', '));
+const validNum = document.querySelectorAll('[placeholder="Сумма"]');
+validNum.forEach(item => {
+  item.addEventListener('input', function() {
+    item.value = item.value.replace(/[^\d]/g, '');
+  });
+});

@@ -165,31 +165,38 @@ class AppData {
       this.moneyDeposit = +depositAmount.value;
     }
   }
+  percentInput() {
+    depositPercent.value = depositPercent.value.replace(/[^\d]/g, '');
+    if (depositPercent.value !== '' && depositPercent.value < 1 || depositPercent.value > 100) {
+      depositPercent.value = depositPercent.value.replace(/[\d]$/, '');
+      alert('Введите корректное значение в поле проценты');
+    } else if (depositPercent.value === '') {
+      calculate.disabled = true;
+    } else if (salaryAmount.value !== '' && depositPercent.value !== '') {
+      calculate.disabled = false;
+    }
+  }
   changePercent() {
     const valueSelect = this.value;
     if (valueSelect === 'other') {
       depositPercent.value = '';
       depositPercent.style.display = 'inline-block';
-      depositPercent.addEventListener('input', () => {
-        depositPercent.value = depositPercent.value.replace(/[^\d]/g, '');
-        if (depositPercent.value !== '' && depositPercent.value < 1 || depositPercent.value > 100) {
-          calculate.disabled = true;
-          alert('Введите корректное значение в поле проценты');
-        } else if (salaryAmount.value !== '') {
-          calculate.disabled = false;
-        }
-      });
     } else {
+      calculate.disabled = false;
       depositPercent.value = valueSelect;
       depositPercent.style.display = 'none';
     }
   }
   depositHandler() {
     if (deposit.checked) {
+      if (depositBank.value === '') {
+        calculate.disabled = true;
+      }
       depositBank.style.display = 'inline-block';
       depositAmount.style.display = 'inline-block';
       this.deposit = true;
       depositBank.addEventListener('change', this.changePercent);
+      depositPercent.addEventListener('input', this.percentInput);
     } else {
       depositBank.style.display = 'none';
       depositAmount.style.display = 'none';
@@ -199,6 +206,7 @@ class AppData {
       depositPercent.value = '';
       this.deposit = false;
       depositBank.removeEventListener('change', this.changePercent);
+      depositPercent.removeEventListener('input', this.percentInput);
     }
   }
   calcSavedMoney() {
@@ -209,6 +217,8 @@ class AppData {
     for (let item of inputArray) {
       item.toggleAttribute('disabled');
     }
+    deposit.toggleAttribute('disabled');
+    depositBank.toggleAttribute('disabled');
   }
   blockInput() {
     this.inputToggle();
@@ -221,6 +231,7 @@ class AppData {
     for (let item of inputReset) {
       item.value = '';
     }
+    depositPercent.value = '';
     for (let i = 1; i < expensesItems.length; i++) {
       expensesItems[i].remove();
       expensesPlus.style.display = 'block';

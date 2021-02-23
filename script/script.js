@@ -14,6 +14,7 @@ window.addEventListener('DOMContentLoaded', () => {
     const getTimeRemaining = () => {
       const dateStop = new Date(deadline).getTime();
       const dateNow = new Date().getTime();
+      const fullStop = dateNow > dateStop ? true : false;
       const timeRemaining = (dateStop - dateNow) / 1000;
       const seconds = twoDigits(Math.floor(timeRemaining % 60));
       const minutes = twoDigits(Math.floor((timeRemaining / 60) % 60));
@@ -22,7 +23,8 @@ window.addEventListener('DOMContentLoaded', () => {
         timeRemaining,
         hours,
         minutes,
-        seconds
+        seconds,
+        fullStop
       };
     };
 
@@ -32,13 +34,18 @@ window.addEventListener('DOMContentLoaded', () => {
       timerMinutes.textContent = timer.minutes;
       timerSeconds.textContent = timer.seconds;
     };
-    if (getTimeRemaining().timeRemaining >= 0) {
+    if (getTimeRemaining().timeRemaining > 0) {
       updateClock();
-      setInterval(() => updateClock(), 1000);
+      const timerId = setInterval(() => {
+        if (getTimeRemaining().fullStop) {
+          clearInterval(timerId);
+        } else {
+          updateClock();
+        }
+      }, 1000);
     }
-
   };
-  countTimer('24 February 2021');
+  countTimer('25 February 2021');
   //Меню
   const toggleMenu = () => {
     const btnMenu = document.querySelector('.menu');

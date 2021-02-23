@@ -1,16 +1,16 @@
 //Обязательное задание
 'use strict';
 
-function twoDigits(num) {
+const twoDigits = (num) => {
   return ('0' + num).slice(-2);
-}
+};
 
 const currentDate = document.getElementById('today');
 const days = ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота', 'Воскресенье'];
 
-function timeFormat() {
+const timeFormat = () => {
   const date = new Date();
-  const day = days[date.getDay() - 1];
+  const day = days[new Date().getDay() - 1];
   const hour = date.getHours();
   let greeting = ''; //Приветствие
   if (hour >= 5 && hour < 12) {
@@ -34,29 +34,37 @@ function timeFormat() {
     minutes,
     seconds
   };
-}
+};
 
-function getTimeRemaining() {
+const getTimeRemaining = () => {
   const dateStop = new Date('1 January 2022').getTime();
   const dateNow = new Date().getTime();
+  const newYear = dateNow > dateStop ? true : false;
   const timeRemaining = (dateStop - dateNow) / 1000;
   // const hours = Math.floor(timeRemaining / 60 / 60) % 24;
   const day = Math.floor(timeRemaining / 60 / 60 / 24);
   return {
     timeRemaining,
-    day
+    day,
+    newYear
   };
-}
+};
 
-function textDate() {
+const textDate = () => {
   const time = timeFormat();
   const timer = getTimeRemaining();
   currentDate.innerHTML = `${time.greeting} <br>
   Сегодня: ${time.day} <br>
   Текущее время: ${twoDigits(time.hours)}:${time.minutes}:${time.seconds} ${time.amPM}<br>
   До нового года осталось ${timer.day} дней`;
-}
-if (getTimeRemaining().timeRemaining >= 0) {
+};
+if (getTimeRemaining().timeRemaining > 0) {
   textDate();
-  setInterval(() => textDate(), 1000);
+  const timerId = setInterval(() => {
+    if (getTimeRemaining().newYear) {
+      clearInterval(timerId);
+    } else {
+      textDate();
+    }
+  }, 1000);
 }

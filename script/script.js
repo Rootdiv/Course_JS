@@ -215,4 +215,76 @@ window.addEventListener('DOMContentLoaded', () => {
     startSlide(1500);
   };
   slider();
+  //Блок Калькулятор
+  const calculator = () => {
+    const calcBlock = document.querySelector('.calc-block');
+    calcBlock.addEventListener('input', (event) => {
+      if (event.target.closest('input')) {
+        event.target.value = event.target.value.replace(/\D/, '');
+      }
+    });
+  };
+  calculator();
+  //Блок Наша команда
+  const commands = () => {
+    const command = document.getElementById('command');
+    const changeImg = (event) => {
+      if (event.target.closest('.command__photo')) {
+        const img = event.target.src;
+        event.target.src = event.target.dataset.img;
+        event.target.dataset.img = img;
+      }
+    };
+    command.addEventListener('mouseover', (event) => {
+      changeImg(event);
+    });
+    command.addEventListener('mouseout', (event) => {
+      changeImg(event);
+    });
+  };
+  commands();
+  //Валидация форм
+  const validFormName = () => {
+    const formName = document.querySelectorAll('[placeholder="Ваше имя"]');
+    formName.forEach(item => {
+      item.addEventListener('blur', () => {
+        item.value = item.value.trim().replace(/[^а-яё\s]/gi, '');
+        item.value = item.value.trim().split(/\s+/).map(str => str.charAt(0).toUpperCase() + str.slice(1)).join(' ');
+      });
+    });
+  };
+  validFormName();
+  const validFormEmail = () => {
+    const formEmail = document.querySelectorAll('[placeholder="E-mail"]');
+    formEmail.forEach(item => {
+      item.addEventListener('blur', () => {
+        item.value = item.value.trim().replace(/[^a-z@\-_.!~*']/gi, '');
+        item.value = item.value.trim().replace(/^-|-$/g, '');
+        item.value = item.value.trim().replace(/\s+/g, ' ');
+        item.value = item.value.trim().replace(/-+/g, '-');
+      });
+    });
+  };
+  validFormEmail();
+  const validFormPhone = () => {
+    const formPhone = document.querySelectorAll('[placeholder="Номер телефона"]');
+    formPhone.forEach(item => {
+      item.addEventListener('blur', () => {
+        item.value = item.value.trim().replace(/[^\d\-()]/g, '');
+        item.value = item.value.trim().replace(/^-|-$/g, '');
+        item.value = item.value.trim().replace(/-+/g, '-');
+      });
+    });
+  };
+  validFormPhone();
+  //Блок Контакты
+  const contacts = () => {
+    const message = document.getElementById('form2-message');
+    message.addEventListener('blur', () => {
+      message.value = message.value.trim().replace(/[^а-яё\s]/gi, '');
+      message.value = message.value.trim().replace(/\s+/g, ' ');
+      message.value = message.value.trim().replace(/-+/g, '-');
+    });
+  };
+  contacts();
 });

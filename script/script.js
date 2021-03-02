@@ -216,15 +216,45 @@ window.addEventListener('DOMContentLoaded', () => {
   };
   slider();
   //Блок Калькулятор
-  const calculator = () => {
+  const calculator = (price = 100) => {
     const calcBlock = document.querySelector('.calc-block');
+    const calcType = document.querySelector('.calc-type');
+    const calcSquare = document.querySelector('.calc-square');
+    const calcCount = document.querySelector('.calc-count');
+    const calcDay = document.querySelector('.calc-day');
+    const totalValue = document.getElementById('total');
+    const countSum = () => {
+      let total = 0,
+        countValue = 1,
+        dayValue = 1;
+      const typeValue = calcType.options[calcType.selectedIndex].value;
+      const squareValue = +calcSquare.value;
+      if (calcCount.value > 1) {
+        countValue += (calcCount.value - 1) / 10;
+      }
+      if (calcDay.value && calcDay.value < 5) {
+        dayValue *= 2;
+      } else if (calcDay.value && calcDay.value < 10) {
+        dayValue *= 1.5;
+      }
+      if (typeValue && squareValue) {
+        total = price * typeValue * squareValue * countValue * dayValue;
+      }
+      totalValue.textContent = total;
+    };
+    calcBlock.addEventListener('change', (event) => {
+      const target = event.target;
+      if (target.matches('select') || target.matches('input')) {
+        countSum();
+      }
+    });
     calcBlock.addEventListener('input', (event) => {
-      if (event.target.closest('input')) {
+      if (event.target.matches('input')) {
         event.target.value = event.target.value.replace(/\D/, '');
       }
     });
   };
-  calculator();
+  calculator(100);
   //Блок Наша команда
   const commands = () => {
     const command = document.getElementById('command');
@@ -249,7 +279,7 @@ window.addEventListener('DOMContentLoaded', () => {
     formName.forEach(item => {
       item.addEventListener('blur', () => {
         item.value = item.value.trim().replace(/[^а-яё\s]/gi, '');
-        item.value = item.value.trim().split(/\s+/).map(str => str.charAt(0).toUpperCase() + str.slice(1)).join(' ');
+        item.value = item.value.split(/\s+/).map(str => str.charAt(0).toUpperCase() + str.slice(1)).join(' ');
       });
     });
   };
@@ -258,10 +288,7 @@ window.addEventListener('DOMContentLoaded', () => {
     const formEmail = document.querySelectorAll('[placeholder="E-mail"]');
     formEmail.forEach(item => {
       item.addEventListener('blur', () => {
-        item.value = item.value.trim().replace(/[^a-z@\-_.!~*']/gi, '');
-        item.value = item.value.trim().replace(/^-|-$/g, '');
-        item.value = item.value.trim().replace(/\s+/g, ' ');
-        item.value = item.value.trim().replace(/-+/g, '-');
+        item.value = item.value.trim().replace(/[^a-z@\-_.!~*']/gi, '').replace(/^-|-$/g, '').replace(/\s+/g, ' ').replace(/-+/g, '-');
       });
     });
   };
@@ -270,9 +297,7 @@ window.addEventListener('DOMContentLoaded', () => {
     const formPhone = document.querySelectorAll('[placeholder="Номер телефона"]');
     formPhone.forEach(item => {
       item.addEventListener('blur', () => {
-        item.value = item.value.trim().replace(/[^\d\-()]/g, '');
-        item.value = item.value.trim().replace(/^-|-$/g, '');
-        item.value = item.value.trim().replace(/-+/g, '-');
+        item.value = item.value.trim().replace(/[^\d\-()]/g, '').replace(/^-|-$/g, '').replace(/-+/g, '-');
       });
     });
   };
@@ -281,9 +306,7 @@ window.addEventListener('DOMContentLoaded', () => {
   const contacts = () => {
     const message = document.getElementById('form2-message');
     message.addEventListener('blur', () => {
-      message.value = message.value.trim().replace(/[^а-яё\s]/gi, '');
-      message.value = message.value.trim().replace(/\s+/g, ' ');
-      message.value = message.value.trim().replace(/-+/g, '-');
+      message.value = message.value.trim().replace(/[^а-яё\s]/gi, '').replace(/\s+/g, ' ').replace(/-+/g, '-');
     });
   };
   contacts();

@@ -247,9 +247,11 @@ window.addEventListener('DOMContentLoaded', () => {
   const validFormName = () => {
     const formName = document.querySelectorAll('[placeholder="Ваше имя"]');
     formName.forEach(item => {
+      item.addEventListener('input', () => {
+        item.value = item.value.replace(/[^а-яё\s]/gi, '');
+      });
       item.addEventListener('blur', () => {
-        item.value = item.value.trim().replace(/[^а-яё\s]/gi, '');
-        item.value = item.value.trim().split(/\s+/).map(str => str.charAt(0).toUpperCase() + str.slice(1)).join(' ');
+        item.value = item.value.split(/\s+/).map(str => str.charAt(0).toUpperCase() + str.slice(1)).join(' ');
       });
     });
   };
@@ -257,11 +259,11 @@ window.addEventListener('DOMContentLoaded', () => {
   const validFormEmail = () => {
     const formEmail = document.querySelectorAll('[placeholder="E-mail"]');
     formEmail.forEach(item => {
+      item.addEventListener('input', () => {
+        item.value = item.value.replace(/[^a-z@\-_.!~*']/gi, '');
+      });
       item.addEventListener('blur', () => {
-        item.value = item.value.trim().replace(/[^a-z@\-_.!~*']/gi, '');
-        item.value = item.value.trim().replace(/^-|-$/g, '');
-        item.value = item.value.trim().replace(/\s+/g, ' ');
-        item.value = item.value.trim().replace(/-+/g, '-');
+        item.value = item.value.replace(/^[\s-]+|[\s-]+$/gi, '').replace(/-+/g, '-');
       });
     });
   };
@@ -269,10 +271,11 @@ window.addEventListener('DOMContentLoaded', () => {
   const validFormPhone = () => {
     const formPhone = document.querySelectorAll('[placeholder="Номер телефона"]');
     formPhone.forEach(item => {
+      item.addEventListener('input', () => {
+        item.value = item.value.replace(/[^+\d\-()]/g, '');
+      });
       item.addEventListener('blur', () => {
-        item.value = item.value.trim().replace(/[^\d\-()]/g, '');
-        item.value = item.value.trim().replace(/^-|-$/g, '');
-        item.value = item.value.trim().replace(/-+/g, '-');
+        item.value = item.value.replace(/^[\s-]+|[\s\-\+]{1,}$/g, '').replace(/-+/g, '-');
       });
     });
   };
@@ -280,10 +283,11 @@ window.addEventListener('DOMContentLoaded', () => {
   //Блок Контакты
   const contacts = () => {
     const message = document.getElementById('form2-message');
+    message.addEventListener('input', () => {
+      message.value = message.value.replace(/[^а-яё\s]/gi, '');
+    });
     message.addEventListener('blur', () => {
-      message.value = message.value.trim().replace(/[^а-яё\s]/gi, '');
-      message.value = message.value.trim().replace(/\s+/g, ' ');
-      message.value = message.value.trim().replace(/-+/g, '-');
+      message.value = message.value.trim().replace(/\s+/g, ' ').replace(/-+/g, '-');
     });
   };
   contacts();

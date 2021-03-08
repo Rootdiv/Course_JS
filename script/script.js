@@ -332,23 +332,23 @@ window.addEventListener('DOMContentLoaded', () => {
     const statusMessage = document.createElement('div');
     statusMessage.style.cssText = 'font-size: 2rem; color: #ffffff';
     //Функция отправки данных на сервер и обработки ответа
-    const postData = (body, outputData, errorData) => {
-      const request = new XMLHttpRequest();
-      request.addEventListener('readystatechange', () => {
-        if (request.readyState !== 4) {
-          return;
-        }
-        if (request.status === 200) {
-          outputData();
-        } else {
-          errorData(request.status);
-        }
+    const postData = (body) => {
+      return new Promise((resolve, reject) => {
+        const request = new XMLHttpRequest();
+        request.addEventListener('readystatechange', () => {
+          if (request.readyState !== 4) {
+            return;
+          }
+          if (request.status === 200) {
+            resolve();
+          } else {
+            reject(request.status);
+          }
+        });
+        request.open('POST', './server.php');
+        request.setRequestHeader('Content-Type', 'application/json');
+        request.send(JSON.stringify(body));
       });
-      request.open('POST', './server.php');
-      //request.setRequestHeader('Content-Type', 'multipart/form-data');
-      request.setRequestHeader('Content-Type', 'application/json');
-      //request.send(formData);
-      request.send(JSON.stringify(body));
     };
     form.addEventListener('submit', (event) => {
       event.preventDefault();
@@ -357,15 +357,10 @@ window.addEventListener('DOMContentLoaded', () => {
       const formData = new FormData(form);
       form.reset();
       let body = {};
-      // for (let val of formData.entries()) {
-      //   body[val[0]] = val[1];
-      // }
       formData.forEach((val, key) => {
         body[key] = val;
       });
-      postData(body, () => {
-        statusMessage.textContent = successMessage;
-      }, (error) => {
+      postData(body).then(() => statusMessage.textContent = successMessage).catch(error => {
         statusMessage.textContent = errorMessage;
         console.error(error);
       });
